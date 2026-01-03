@@ -1,0 +1,96 @@
+.Coursepreview {
+  padding: 80px 32px;
+}
+
+.Coursepreview h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* 輪播整體包裝器 */
+.carousel-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* 課程圖片容器 */
+.courses-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: nowrap;
+}
+
+/* 所有圖片的基本樣式 */
+.courses-container img {
+  object-fit: cover;
+  border-radius: 12px;
+  transition: all 0.4s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 左邊圖片（第一張） - 較小 */
+.courses-container img:nth-child(1) {
+  width: 240px;
+  height: 180px;
+  opacity: 0.85;
+}
+
+/* 中間圖片（第二張） - 最大 */
+.courses-container img:nth-child(2) {
+  width: 360px;
+  height: 270px;
+  opacity: 1;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* 右邊圖片（第三張） - 較小 */
+.courses-container img:nth-child(3) {
+  width: 300px;
+  height: 200px;
+  opacity: 0.85;
+}
+
+/* 輪播按鈕 */
+.carousel-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #2f2a26;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.carousel-btn:hover {
+  background-color: #ffffff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  transform: scale(1.1);
+}
+
+.carousel-btn:active {
+  transform: scale(0.95);
+}
+
+.carousel-btn:focus,
+.carousel-btn:focus-visible {
+  outline: none;
+}
+
+.carousel-btn svg {
+  width: 12px;
+  height: 12px;
+}

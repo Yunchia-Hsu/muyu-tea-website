@@ -1,0 +1,47 @@
+
+.slogan {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: flex-start;
+    padding-top: 0px;
+    margin-top: -60px;
+  }
+  
+  /* sip ... */
+  .slogan-title {
+    font-size: 48px;
+    font-weight: 500;
+    color: #2f2a26; /* dark brown*/
+  
+    margin-bottom: 2px;
+  }
+  
+  /* modern tea ...*/
+  .slogan-subtitle {
+    font-size: 18px;
+    font-weight: 400;
+    color: #6f6a64;
+  
+    margin-bottom: 40px;
+  }
+  
+  /* Explore courses button */
+  .slogan-button {
+    padding: 12px 28px;
+    font-size: 14px;
+    letter-spacing: 1px;
+  
+    background-color: #2f2a26;
+    color: #ffffff;
+  
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  
+  .slogan-button:hover {
+    opacity: 0.8;
+  }
+ 

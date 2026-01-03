@@ -1,0 +1,27 @@
+.course-card {
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.course-card-small {
+  width: 240px;
+  height: 180px;
+}
+
+.course-card-large {
+  width: 400px;
+  height: 300px;
+}
+
+.course-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  pointer-events: none;
+  user-select: none;
+}

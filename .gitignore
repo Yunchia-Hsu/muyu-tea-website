@@ -1,0 +1,10 @@
+# OS
+.DS_Store
+.env
+.env.*
+*.db
+notes/
+*.txt
+coursecontent.png
+homepage.png
+loginpage.png
