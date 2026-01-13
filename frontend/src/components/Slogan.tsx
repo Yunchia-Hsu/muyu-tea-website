@@ -9,12 +9,12 @@ function Slogan() {
       <h3 className="slogan-subtitle">
         Design your life with tea and pieceful mind.
       </h3>
-      <button
+      {/* <button
         className="slogan-button"
         onClick={() => navigate("/teaintro")}
       >
         Explore Tea
-      </button>
+      </button> */}
     </section>
   );
 }

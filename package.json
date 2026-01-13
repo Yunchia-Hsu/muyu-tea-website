@@ -1,0 +1,25 @@
+{
+  "name": "muyu-tea-fullstack",
+  "version": "1.0.0",
+  "description": "Muyu Tea Website - Full Stack Application",
+  "private": true,
+  "scripts": {
+    "preinstall": "echo '📦 Installing dependencies...'",
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "install:all": "npm run install:backend && npm run install:frontend",
+    "dev:db": "bash ~/postgres-start.sh",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev": "concurrently -n \"DB,Backend,Frontend\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm run dev:db\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "stop": "bash ~/postgres-stop.sh && pkill -f 'ts-node-dev' && pkill -f 'vite'",
+    "status": "bash ~/postgres-status.sh",
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "build": "npm run build:backend && npm run build:frontend",
+    "clean": "rm -rf backend/node_modules backend/dist frontend/node_modules frontend/dist node_modules"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

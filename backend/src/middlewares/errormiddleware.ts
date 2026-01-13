@@ -8,7 +8,8 @@ export const errorHandler = (
 ) => {
   console.error(err); // server log
 
+  // 統一回傳格式為 { message: "..." }
   res.status(400).json({
-    error: err.message || 'Something went wrong',
+    message: err.message || 'Something went wrong',
   });
 };

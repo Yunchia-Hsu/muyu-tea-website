@@ -1,3 +1,4 @@
+import cors from "cors";
 import { pool } from "./db";
 import SwaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./swagger";
@@ -9,7 +10,14 @@ import { errorHandler } from "./middlewares/errormiddleware";
 const app = express();
 app.use("/api-doc", SwaggerUi.serve, SwaggerUi.setup(swaggerSpec));
 app.use(express.json());
-
+app.use(
+  cors(
+    {
+      origin: "http://localhost:5173",
+      credentials: true,
+    }
+  )
+);
 app.use("/api/auth", authRoutes);
 
 app.use("/api/courses", courseRoutes);

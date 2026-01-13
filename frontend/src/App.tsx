@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import CourseContent from "./pages/CourseContent";
-import Login from "./pages/Login";
-import Loginin from "./pages/Loginin";
+import Register from "./pages/Register";
 import Navbar from "./components/Navbar";
 import Teaintro from "./components/TeaIntro";
+import Login from "./pages/Login";
 
 import "./App.css";
 function App() {
@@ -13,9 +13,9 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/register"element={<Register />} />
         <Route path="/coursecontent" element={<CourseContent />} />
-        <Route path="/loginin" element={<Loginin />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/teaintro" element={<Teaintro/>}/>
       </Routes>
     </BrowserRouter>

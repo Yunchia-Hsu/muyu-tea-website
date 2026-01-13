@@ -13,6 +13,8 @@ export default function Coursecontent() {
        
         <PageLayout>
          <Header />  
+         //加 上一個課程 下一個課程
+         // 讀取data base裡的課程
         <div className="image-wrapper">
              <img src={travelwithteapic} alt="travel with tea course picture" />
         </div>
