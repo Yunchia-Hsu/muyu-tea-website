@@ -1,6 +1,8 @@
+import {pool} from "../db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {User, UserRecord} from "../types/user";
+import { hash } from "crypto";
 
 let fakeUserId = 1;
 
@@ -18,43 +20,47 @@ export const register = async (
   if (password.length < 6) {
     throw new Error("Password must be at least 6 characters long");
   }
-
   //hash password
   const hashedpassword = await bcrypt.hash(password, 10);
-  const userRecord: UserRecord = {
-    id: fakeUserId++,
-    email,
-    username,
-    password_hash: hashedpassword,
-  };
+  try {
+  const result = await pool.query(
+    
+   `INSERT INTO users (username, email, hashed_password)
+    VALUES ($1, $2, $3)
+    RETURNING id, username, email`,  
+    [username, email, hashedpassword]
+    );
 
-  //save hashpassword to db
-  const user: User = {
-    id: userRecord.id,
-    email: userRecord.email,
-    username: userRecord.username,
-  };
-  users;
   //error check
   console.log("Saving user to DB:", {
     email,
     hashedpassword,
   });
-  users.push(userRecord); // for mock db
-  return user;
+  // users.push(userRecord); // for mock db
+  return result.rows[0];
+} catch (error: any) {
+    if (error?.code === "23505"){
+      throw new Error ("Email already in use" );
+    }
+    throw error
+}
 };
 
 //login 驗證身分，發 token
 export const login = async (email: string, password: string) => {
-  // find user by email
-  const userRecord = users.find((u) => u.email === email);
-  if (!userRecord) {
+  // find user in the data base by email
+ const matchUser = await pool.query (
+    `SELECT id, email, username, hashed_password FROM users 
+    WHERE email =$1`,
+    [email],
+ );
+  if (matchUser.rows.length === 0) {
     throw new Error("Invalid email or password");
   }
   //bcrypt compare
   const isPasswordValid = await bcrypt.compare(
     password,
-    userRecord.password_hash
+    matchUser.rows[0].hashed_password
   );
   if (!isPasswordValid) {
     throw new Error("Invalid email or password");
@@ -62,8 +68,8 @@ export const login = async (email: string, password: string) => {
   //generate JWT
   const token = jwt.sign(
     {
-      userId: userRecord.id,
-      email: userRecord.email,
+      userId: matchUser.rows[0].id,
+      email: matchUser.rows[0].email,
     },
     process.env.JWT_SECRET || "supersecretkey",
     {
@@ -74,9 +80,9 @@ export const login = async (email: string, password: string) => {
   return {
     token,
     user: {
-      id: userRecord.id,
-      email: userRecord.email,
-      username: userRecord.username,
+      id:  matchUser.rows[0].id,
+      email:  matchUser.rows[0].email,
+      username:  matchUser.rows[0].username,
     },
   };
 };

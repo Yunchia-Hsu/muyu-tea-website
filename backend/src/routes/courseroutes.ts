@@ -37,8 +37,6 @@ router.get('/', getAllCourses);
 
 
 
-
-
 router.post('/:id/enroll', authMiddleware,enrollCourse);
 /**
  * @openapi

@@ -16,7 +16,7 @@ export const getAllCourses = async(
 
 export const enrollCourse = async(req: Request, res: Response, next: NextFunction): Promise<void> => {
     try{
-        const userId = (req as any).user!.userId; // from auth middleware ??
+        const userId = (req as any).user!.userId;
        
         const courseId = Number(req.params.id);
         if (isNaN(courseId)) {
