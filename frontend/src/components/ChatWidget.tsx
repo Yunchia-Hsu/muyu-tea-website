@@ -1,6 +1,4 @@
-import React from "react";
 import './ChatWidget.css';
-import head from '../assets/head.jpg';
 export default function ChatWidget() {
     return (
         <div className="chat-widget">

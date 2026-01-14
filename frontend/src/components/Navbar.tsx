@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 export default function Navbar() {
   return (
     <nav className="flex justify-between items-center px-12 py-6">
@@ -11,6 +9,3 @@ export default function Navbar() {
     </nav>
   );
 }
-
-
-  

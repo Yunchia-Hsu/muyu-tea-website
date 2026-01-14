@@ -5,9 +5,11 @@ import { useState, useEffect } from "react";
 
 function Header() {
   const navigate = useNavigate();
-  const [user, setUser] = useState<{ username: string; email: string } | null>(null);
+  const [user, setUser] = useState<{ username: string; email: string } | null>(
+    null
+  );
 
-  // 從 localStorage 讀取用戶資訊
+  // get user info from localStorage
   useEffect(() => {
     const userStr = localStorage.getItem("user");
     if (userStr) {
@@ -19,7 +21,7 @@ function Header() {
     }
   }, []);
 
-  // 登出功能
+  // log out
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -34,7 +36,6 @@ function Header() {
         alt="muyu tea logo"
         className="logo"
         onClick={() => navigate("/")}
-        
       />
       <h3 className="page-link">
         {user ? (

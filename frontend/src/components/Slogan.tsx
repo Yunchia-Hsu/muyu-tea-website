@@ -1,8 +1,6 @@
 import "./Slogan.css";
-import { useNavigate } from "react-router-dom";
 
 function Slogan() {
-  const navigate = useNavigate();
   return (
     <section className="slogan">
       <h1 className="slogan-title">Muyu Tea Studio</h1>

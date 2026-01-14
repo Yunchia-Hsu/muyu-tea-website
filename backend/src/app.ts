@@ -21,7 +21,7 @@ app.use(
 app.use("/api/auth", authRoutes);
 
 app.use("/api/courses", courseRoutes);
-//?? 健康檢查路由
+
 app.get("/health/db", async (req, res, next) => {
   try {
     const result = await pool.query("SELECT 1 AS ok");
@@ -31,6 +31,5 @@ app.get("/health/db", async (req, res, next) => {
   }
 });
 
-// 🔴 一定要在所有 routes 後面
 app.use(errorHandler);
 export default app;

@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar";
 import "../styles/global.css";
 import "../components/Header.css";
 import { useNavigate } from "react-router-dom";
@@ -17,10 +16,9 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    // 清除之前的錯誤
+    // clean the former error message
     setError(null);
 
-    // 驗證輸入
     if (!email || !password) {
       setError("Pease fill in all fields");
       return;

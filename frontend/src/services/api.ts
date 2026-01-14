@@ -7,6 +7,11 @@ export interface Course {
   image_url?: string;
 }
 
+export interface LoginResponse {
+  token: string;
+  user: { id: number; email: string; username: string };
+}
+
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
@@ -29,15 +34,11 @@ async function fetcher<T>(endpoint: string, options?: RequestInit): Promise<T> {
   return response.json();
 }
 
-// 課程相關 API
 export const courseAPI = {
-  // 獲取所有課程
   getAllCourses: () => fetcher<Course[]>("/courses"),
 
-  // 獲取單一課程
   getCourse: (id: number) => fetcher<Course>(`/courses/${id}`),
 
-  // 報名課程
   enrollCourse: (courseId: number, token: string) =>
     fetcher(`/courses/${courseId}/enroll`, {
       method: "POST",
@@ -47,9 +48,9 @@ export const courseAPI = {
     }),
 };
 
-// 認證相關 API
+
 export const authAPI = {
-  // 註冊
+
   register: (data: {
     email: string;
     username: string;
@@ -61,18 +62,10 @@ export const authAPI = {
       body: JSON.stringify(data),
     }),
 
-  // 登入
   login: (data: { email: string; password: string }) =>
-    fetcher("/auth/login", {
+    fetcher<LoginResponse>("/auth/login", {
       method: "POST",
       body: JSON.stringify(data),
     }),
 
-  //    // 獲取當前用戶
-  //    getMe: (token: string) =>
-  //      fetcher('/auth/me', {
-  //        headers: {
-  //          'Authorization': `Bearer ${token}`,
-  //        },
-  //      }),
 };
