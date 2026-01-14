@@ -1,57 +1,98 @@
-
-
-
-.image-wrapper{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
+.image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
 }
 .image-wrapper img {
-    width: 65%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 20px;
+  width: 65%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 20px;
 }
-.textcontainer{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    margin-top: 30px;
-    margin-bottom: 40px;
-    
+.textcontainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 10px;
 }
-.coursetitle{
-    font-size: 40px;
-    justify-content: center;
-    align-items: center;
-    font-weight: 600;
-    margin-bottom: 12px;
+.coursetitle {
+  font-size: 40px;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  margin-bottom: 12px;
 }
-.courseintro{
-    font-size: 18px;
-    justify-content: center;
-    align-items: center;
-    color: #6f6a64;
-    margin-bottom: 20px;
-    width: 70%;
+.courseintro {
+  font-size: 18px;
+  justify-content: center;
+  align-items: center;
+  color: #6f6a64;
+  margin-bottom: 20px;
+  width: 70%;
 }
 .register-button {
-    padding: 12px 28px;
-    font-size: 14px;
-    letter-spacing: 1px;
+  padding: 5px 20px !important;
+  font-size: 20px !important;
+  letter-spacing: 2px;
+  background-color: #53463c;
+  color: #ffffff;
+  margin-top: 3px;
+  border: 1px solid #2f2a26;
+  border-radius: 999px;
+  cursor: pointer;
+  width: fit-content;
   
-    background-color: #2f2a26;
-    color: #ffffff;
-  
-    border: none;
-    border-radius: 999px;
-    cursor: pointer;
-  }
-  
-  .register-button:hover {
-    opacity: 0.8;
-  }
- 
+}
+
+.register-button:hover {
+  opacity: 0.8;
+}
+
+/* 課程價格 */
+.course-price {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2f2a26;
+  margin: 16px 0;
+}
+
+/* 載入和錯誤訊息 */
+.loading-message,
+.error-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  text-align: center;
+  padding: 40px;
+}
+
+.loading-message {
+  font-size: 20px;
+  color: #666;
+}
+
+.error-message {
+  font-size: 18px;
+  color: #c33;
+}
+
+.error-message button {
+  margin-top: 20px;
+  padding: 12px 24px;
+  background-color: #2f2a26;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 10px;
+}
+
+.error-message button:hover {
+  opacity: 0.8;
+}

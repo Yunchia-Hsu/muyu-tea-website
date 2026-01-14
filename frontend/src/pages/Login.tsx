@@ -39,9 +39,12 @@ export default function Login() {
       })
       console.log("login success:", res);
 
-      // 儲存 token（如果有）
+      // 儲存 token 和用戶資訊
       if (res.token) {
         localStorage.setItem("token", res.token);
+      }
+      if (res.user) {
+        localStorage.setItem("user", JSON.stringify(res.user));
       }
 
       navigate("/");
@@ -51,7 +54,7 @@ export default function Login() {
       if (error instanceof Error) {
         setError(error.message);
       } else {
-        setError("登入失敗，請稍後再試");
+        setError("failed to login");
       }
     } finally {
       setLoading(false);

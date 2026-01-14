@@ -3,47 +3,46 @@ import e from "express";
 import { Course } from "../types/course";
 import { Enrollment } from "../types/enrollment";
 // mock DB
-const courses: Course[] = [
-  {
-    id: 1,
-    title: "Introduction to Tea",
-    description: "Learn the basics of tea culture",
-    price: 100,
-  },
-  {
-    id: 2,
-    title: "Advanced Tea Brewing",
-    description: "Master advanced tea brewing techniques",
-    price: 200,
-  },
-  {
-    id: 3,
-    title: "Tea Chemistry",
-    description: "Learn the science behind tea",
-    price: 1000,
-  },
-];
+// const courses: Course[] = [
+//   {
+//     id: 1,
+//     title: "Introduction to Tea",
+//     description: "Learn the basics of tea culture",
+//     price: 100,
+//   },
+//   {
+//     id: 2,
+//     title: "Advanced Tea Brewing",
+//     description: "Master advanced tea brewing techniques",
+//     price: 200,
+//   },
+//   {
+//     id: 3,
+//     title: "Tea Chemistry",
+//     description: "Learn the science behind tea",
+//     price: 1000,
+//   },
+// ];
 
 export const getAllCourses = async (): Promise<Course[]> => {
   // In a real application, this would fetch data from a database
   //   在 service 檔案 import pool  SQL 導入資料
   const result = await pool.query(
-    "SELECT id, title, description, price FROM courses ORDER BY id"
+    "SELECT id, title, description, price , image_url FROM courses ORDER BY id"
   );
   console.log(result);
   return result.rows;
 };
 
-export const getACourse = async (id: number): Promise<Course[]> => {
-  //   const course = courses.find((c) => c.id === id); mock data
+export const getACourse = async (id: number): Promise<Course> => {
   const acourse = await pool.query(
-    "SELECT id, title, description, price FROM courses WHERE id=$1",
+    "SELECT id, title, description, price, image_url FROM courses WHERE id=$1",
     [id]
   );
   if (!acourse.rows.length) {
     throw new Error("Course not found");
   }
-  return acourse.rows;
+  return acourse.rows[0]; // 返回單個課程物件，不是陣列
 };
 
 const enrollments: Enrollment[] = [];
@@ -69,7 +68,7 @@ export const enrollCourse = async (
         throw new Error ("course not found");
         }
         if (error?.constraint === "enrollments_user_id_course_id_key") {
-          throw new Error("User already enrolled in this course");  
+          throw new Error("You already enrolled this course");  
         }
     }
     throw error;

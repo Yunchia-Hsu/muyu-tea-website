@@ -1,4 +1,12 @@
 // API 基礎配置
+export interface Course {
+  id: number;
+  title: string;
+  description?: string;
+  price?: number;
+  image_url?: string;
+}
+
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
@@ -25,10 +33,10 @@ async function fetcher<T>(endpoint: string, options?: RequestInit): Promise<T> {
 // 課程相關 API
 export const courseAPI = {
   // 獲取所有課程
-  getAllCourses: () => fetcher("/courses"),
+  getAllCourses: () => fetcher<Course[]>("/courses"),
 
   // 獲取單一課程
-  getCourse: (id: number) => fetcher(`/courses/${id}`),
+  getCourse: (id: number) => fetcher<Course>(`/courses/${id}`),
 
   // 報名課程
   enrollCourse: (courseId: number, token: string) =>

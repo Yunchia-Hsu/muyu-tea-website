@@ -22,58 +22,155 @@
 .courses-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   gap: 20px;
   flex-wrap: nowrap;
 }
 
-/* 所有圖片的基本樣式 */
-.courses-container img {
-  object-fit: cover;
+/* 課程卡片基本樣式 */
+.course-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
   border-radius: 12px;
-  transition: all 0.4s ease;
+  overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s ease;
 }
 
-/* 左邊圖片（第一張） - 較小 */
-.courses-container img:nth-child(1) {
-  width: 240px;
-  height: 180px;
+.course-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+}
+
+/* 圖片區域 */
+.course-image {
+  width: 100%;
+  overflow: hidden;
+}
+
+.course-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.course-card:hover .course-image img {
+  transform: scale(1.05);
+}
+
+/* 課程資訊區域 */
+.course-info {
+  padding: 16px;
+  background-color: #f9f9f9;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.course-info h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+  font-weight: 600;
+ 
+}
+
+.course-description {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.course-price {
+  margin: 0;
+  font-size: 16px;
+  color: #2f2a26;
+  font-weight: bold;
+}
+
+/* 左邊卡片 - 較小 */
+.course-card-left {
+  width: 200px;
   opacity: 0.85;
 }
 
-/* 中間圖片（第二張） - 最大 */
-.courses-container img:nth-child(2) {
+.course-card-left .course-image {
+  height: 150px;
+}
+
+.course-card-left .course-info h3 {
+  font-size: 16px;
+}
+
+/* 中間卡片 - 最大，顯示完整資訊 */
+.course-card-center {
   width: 360px;
-  height: 270px;
   opacity: 1;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
-/* 右邊圖片（第三張） - 較小 */
-.courses-container img:nth-child(3) {
-  width: 300px;
-  height: 200px;
+.course-card-center .course-image {
+  height: 240px;
+}
+
+/* 右邊卡片 - 中等 */
+.course-card-right {
+  width: 240px;
   opacity: 0.85;
 }
 
-/* 輪播按鈕 */
+.course-card-right .course-image {
+  height: 180px;
+}
+
+.course-card-right .course-info h3 {
+  font-size: 16px;
+}
+
+/* 載入和錯誤訊息 */
+.loading-message,
+.error-message,
+.empty-message {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #666;
+}
+
+/* 輪播按鈕
 .carousel-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  border-radius: 0%;
   border: none;
   outline: none;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color:none;
   color: #2f2a26;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(150, 148, 148, 0.1);
   transition: all 0.3s ease;
   z-index: 10;
+} */
+.carousel-btn {
+  background: none;     /* 沒有背景 */
+  border: none;
+  padding: 8px;         /* 讓箭頭周圍有可點空間 */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2f2a26;       /* SVG 用 currentColor */
+  background-color: #d0cece; /* 淺灰色背景 */
 }
+
 
 .carousel-btn:hover {
   background-color: #ffffff;
@@ -93,4 +190,17 @@
 .carousel-btn svg {
   width: 12px;
   height: 12px;
+}
+
+.classbutton {
+  font-size: 15px !important;
+  letter-spacing: 2px;
+  background-color: #7e7b7b;
+  color: #ffffff;
+  margin-top: 3px; 
+  border: 1px solid #82807f;
+  border-radius: 999px;
+  cursor: pointer;
+  width: fit-content;
+  padding: 10px 20px;
 }

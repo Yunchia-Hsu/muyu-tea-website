@@ -1,8 +1,32 @@
 import logo from "../assets/logo.png";
 import "./Header.css";
 import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+
 function Header() {
   const navigate = useNavigate();
+  const [user, setUser] = useState<{ username: string; email: string } | null>(null);
+
+  // 從 localStorage 讀取用戶資訊
+  useEffect(() => {
+    const userStr = localStorage.getItem("user");
+    if (userStr) {
+      try {
+        setUser(JSON.parse(userStr));
+      } catch (e) {
+        console.error("Failed to parse user data:", e);
+      }
+    }
+  }, []);
+
+  // 登出功能
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+    navigate("/");
+  };
+
   return (
     <header className="header">
       <img
@@ -10,10 +34,18 @@ function Header() {
         alt="muyu tea logo"
         className="logo"
         onClick={() => navigate("/")}
+        
       />
       <h3 className="page-link">
-        <Link to="/login"> Log in </Link>{" "}
-        <Link to="/coursecontent"> Expore Courses </Link>
+        {user ? (
+          <div className="user-info">
+            <span>Welcome, {user.username}</span>
+            <button onClick={handleLogout}>Log out</button>
+          </div>
+        ) : (
+          <Link to="/login">Log in</Link>
+        )}
+        <Link to="/"> Home </Link>
       </h3>
     </header>
   );
