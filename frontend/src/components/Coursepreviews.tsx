@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { courseAPI } from "../services/api";
 import type { Course } from "../services/api";
+import OptimizedImage from "./OptimizedImage";
 import "./Coursepreviews.css";
 
 function Coursepreview() {
@@ -10,6 +11,12 @@ function Coursepreview() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [centerIndex, setCenterIndex] = useState(0);
+  // 追蹤每張圖片的載入狀態
+  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
+
+  const handleImageLoad = (index: number) => {
+    setLoadedImages((prev) => new Set(prev).add(index));
+  };
 
   // fetch courses content from API
   useEffect(() => {
@@ -91,9 +98,12 @@ function Coursepreview() {
           {/* left side course card*/}
           <div className="course-card course-card-left">
             <div className="course-image">
-              <img
+              {!loadedImages.has(leftIdx) && <div className="image-skeleton" />}
+              <OptimizedImage
                 src={courses[leftIdx]?.image_url ?? "/images/tea-intro.png"}
-                alt={courses[leftIdx]?.title}
+                alt={courses[leftIdx]?.title ?? "Course image"}
+                onLoad={() => handleImageLoad(leftIdx)}
+                style={{ opacity: loadedImages.has(leftIdx) ? 1 : 0 }}
               />
             </div>
             <div className="course-info">
@@ -104,9 +114,12 @@ function Coursepreview() {
           {/* middle side course card*/}
           <div className="course-card course-card-center">
             <div className="course-image">
-              <img
+              {!loadedImages.has(centerIdx) && <div className="image-skeleton" />}
+              <OptimizedImage
                 src={courses[centerIdx]?.image_url ?? "/images/tea-intro.png"}
-                alt={courses[centerIdx]?.title}
+                alt={courses[centerIdx]?.title ?? "Course image"}
+                onLoad={() => handleImageLoad(centerIdx)}
+                style={{ opacity: loadedImages.has(centerIdx) ? 1 : 0 }}
               />
             </div>
             <div className="course-info">
@@ -126,9 +139,12 @@ function Coursepreview() {
           {/* right side course card */}
           <div className="course-card course-card-right">
             <div className="course-image">
-              <img
+              {!loadedImages.has(rightIdx) && <div className="image-skeleton" />}
+              <OptimizedImage
                 src={courses[rightIdx]?.image_url ?? "/images/tea-intro.png"}
-                alt={courses[rightIdx]?.title}
+                alt={courses[rightIdx]?.title ?? "Course image"}
+                onLoad={() => handleImageLoad(rightIdx)}
+                style={{ opacity: loadedImages.has(rightIdx) ? 1 : 0 }}
               />
             </div>
             <div className="course-info">

@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { courseAPI } from "../services/api";
 import Header from "../components/Header";
+import OptimizedImage from "../components/OptimizedImage";
 import "./CourseContent.css";
 import type { Course } from "../services/api";
 
@@ -16,6 +17,7 @@ export default function Coursecontent() {
   const [error, setError] = useState<string | null>(null);
   const [enroll, setEnroll] = useState(false);
   const [enrollmsg, setEnrollmsg] = useState<string | null>(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     async function fetchCourse() {
@@ -103,9 +105,12 @@ export default function Coursecontent() {
       <Header />
       {/* display course content */}
       <div className="image-wrapper">
-        <img
+        {!imageLoaded && <div className="image-skeleton" />}
+        <OptimizedImage
           src={course.image_url ?? "/images/tea-intro.png"}
           alt={course.title}
+          onLoad={() => setImageLoaded(true)}
+          style={{ opacity: imageLoaded ? 1 : 0 }}
         />
       </div>
       <div className="textcontainer">
