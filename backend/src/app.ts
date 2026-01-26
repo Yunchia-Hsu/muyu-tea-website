@@ -30,6 +30,18 @@ app.get("/health/db", async (req, res, next) => {
     next(err);
   }
 });
+//for api Error("Unauthorized (text)") testing
+// app.get("/api/test/text-error", (req, res) => {
+//   res.status(401).type("text/plain").send("Unauthorized (text)");
+// });
+
+// app.get("/api/test/html-error", (req, res) => {
+//   res.status(502).type("text/html").send("<h1>Bad Gateway</h1>");
+// });
+// app.post("/api/test/no-content", (req, res) => {
+//   res.status(204).send();
+// });
+
 
 app.use(errorHandler);
 export default app;
