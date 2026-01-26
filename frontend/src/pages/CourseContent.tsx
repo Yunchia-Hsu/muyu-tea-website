@@ -9,20 +9,45 @@ import OptimizedImage from "../components/OptimizedImage";
 import "./CourseContent.css";
 import type { Course } from "../services/api";
 
+// Error types for better UX
+type ErrorType = "NOT_FOUND" | "NETWORK" | "INVALID_ID" | null;
+
 export default function Coursecontent() {
   const { id } = useParams<{ id: string }>(); // get course id from url
   const navigate = useNavigate();
   const [course, setCourse] = useState<Course | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [errorType, setErrorType] = useState<ErrorType>(null);
   const [enroll, setEnroll] = useState(false);
   const [enrollmsg, setEnrollmsg] = useState<string | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [countdown, setCountdown] = useState(3);
+
+  // Auto redirect countdown when error occurs
+  useEffect(() => {
+    if (!errorType) return;
+
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          navigate("/");
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [errorType, navigate]);
 
   useEffect(() => {
     async function fetchCourse() {
-      if (!id) {
-        setError("invalid course ID");
+      // Validate ID format
+      if (!id || isNaN(Number(id))) {
+        setError("Invalid course ID");
+        setErrorType("INVALID_ID");
         setLoading(false);
         return;
       }
@@ -30,6 +55,13 @@ export default function Coursecontent() {
       try {
         setLoading(true);
         const data = await courseAPI.getCourse(Number(id));
+
+        if (!data) {
+          setError("Course not found");
+          setErrorType("NOT_FOUND");
+          return;
+        }
+
         setCourse(data);
       } catch (err) {
         // Handle session expired - redirect to login
@@ -37,7 +69,17 @@ export default function Coursecontent() {
           navigate("/login");
           return;
         }
-        setError(err instanceof Error ? err.message : "Failed to fetch course");
+
+        // Determine error type
+        const errorMessage = err instanceof Error ? err.message : "Failed to fetch course";
+
+        if (errorMessage.includes("not found") || errorMessage.includes("404")) {
+          setErrorType("NOT_FOUND");
+        } else {
+          setErrorType("NETWORK");
+        }
+
+        setError(errorMessage);
         console.error("Error fetching course:", err);
       } finally {
         setLoading(false);
@@ -45,7 +87,7 @@ export default function Coursecontent() {
     }
 
     fetchCourse();
-  }, [id]);
+  }, [id, navigate]);
 
   if (loading) {
     return (
@@ -61,8 +103,26 @@ export default function Coursecontent() {
       <PageLayout>
         <Header />
         <div className="error-message">
-          <p>Error: {error}</p>
-          <button onClick={() => navigate("/")}>go home</button>
+          {errorType === "NOT_FOUND" && (
+            <>
+              <h2>Course Not Found</h2>
+              <p>The course you're looking for doesn't exist or has been removed.</p>
+            </>
+          )}
+          {errorType === "INVALID_ID" && (
+            <>
+              <h2>Invalid Course URL</h2>
+              <p>The URL seems to be incorrect. Please check and try again.</p>
+            </>
+          )}
+          {errorType === "NETWORK" && (
+            <>
+              <h2>Connection Error</h2>
+              <p>Unable to load the course. Please check your internet connection.</p>
+            </>
+          )}
+          <p className="countdown-text">Redirecting to home in {countdown} seconds...</p>
+          <button onClick={() => navigate("/")}>Go Home Now</button>
         </div>
       </PageLayout>
     );
@@ -97,14 +157,15 @@ export default function Coursecontent() {
     }
   };
 
-  // no course
+  // no course - this case is now handled by the error state above
   if (!course) {
     return (
       <PageLayout>
         <Header />
         <div className="error-message">
-          <p>the course doesn't exist</p>
-          <button onClick={() => navigate("/")}>go home</button>
+          <h2>Course Not Found</h2>
+          <p>The course you're looking for doesn't exist.</p>
+          <button onClick={() => navigate("/")}>Go Home</button>
         </div>
       </PageLayout>
     );

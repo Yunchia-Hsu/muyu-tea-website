@@ -107,7 +107,24 @@
 
 .error-message {
   font-size: 18px;
-  color: #c33;
+  color: #333;
+}
+
+.error-message h2 {
+  font-size: 28px;
+  color: #2f2a26;
+  margin-bottom: 12px;
+}
+
+.error-message p {
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.error-message .countdown-text {
+  font-size: 14px;
+  color: #999;
+  margin-top: 16px;
 }
 
 .error-message button {
@@ -118,7 +135,7 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 10px;
+  font-size: 16px;
 }
 
 .error-message button:hover {

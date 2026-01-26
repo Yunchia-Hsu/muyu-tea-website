@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import CourseContent from "./pages/CourseContent";
 import Register from "./pages/Register";
@@ -13,10 +13,14 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/register"element={<Register />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/coursecontent/:id" element={<CourseContent />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/teaintro" element={<Teaintro/>}/>
+        <Route path="/teaintro" element={<Teaintro />} />
+        {/* Redirect invalid routes to home */}
+        <Route path="/coursecontent" element={<Navigate to="/" replace />} />
+        <Route path="/course" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />   // no match route redurect to home
       </Routes>
     </BrowserRouter>
   );
