@@ -4,9 +4,48 @@ import { useNavigate } from "react-router-dom";
 import PageLayout from "../layouts/PageLayout";
 import "./Register.css";
 import Header from "../components/Header";
-import {authAPI} from "../services/api";
+import { authAPI } from "../services/api";
 import { useState } from "react";
 import ErrorMessage from "../components/ErrorMessage";
+
+//email validation check
+function isValidEmail(email: string): boolean {
+  const parts = email.split("@");
+  const [local, domain] = parts;
+
+  // 3. @ must contain sth before @
+  if (local.length === 0) return false;
+
+  //  @ must contain.
+  const domainParts = domain.split(".");
+  if (domainParts.length < 2) return false;
+
+  //  . ...@...
+  if (domainParts.some((part) => part.length === 0)) return false;
+
+  return true;
+}
+
+function validateEmail(email: string): { valid: boolean; error?: string } {
+  // Check for empty
+  if (!email.trim()) {
+    return { valid: false, error: "Email cannot be empty" };
+  }
+  // Check for spaces
+  if (email.includes(" ")) {
+    return { valid: false, error: "Email cannot contain spaces" };
+  }
+  // Check for multiple @ symbols
+  const atSymbolCount = (email.match(/@/g) || []).length; // find /@/  global
+  if (atSymbolCount !== 1) {
+    return { valid: false, error: "Email must contain exactly one '@' symbol" };
+  }
+  // Check basic email format: something@something.something
+  if (!isValidEmail(email)) {
+    return { valid: false, error: "Email format is invalid" };
+  }
+  return { valid: true };
+}
 
 export default function Login() {
   const navigate = useNavigate();
@@ -20,24 +59,26 @@ export default function Login() {
     setError(null);
 
     if (!email || !password) {
-      setError("Pease fill in all fields");
+      setError("Please fill in all fields");
       return;
     }
 
-    if (!email.includes("@")) {
-      setError("Please enter a valid email address");
+    // Validate email
+    const emailValidation = validateEmail(email);
+    if (!emailValidation.valid) {
+      setError(emailValidation.error || "Invalid email");
       return;
     }
 
-    try{
+    try {
       setLoading(true);
       const res = await authAPI.login({
         email,
         password,
-      })
+      });
       console.log("login success:", res);
 
-      // 儲存 token 和用戶資訊
+      // save token and user info to local storage
       if (res.token) {
         localStorage.setItem("token", res.token);
       }
@@ -46,9 +87,9 @@ export default function Login() {
       }
 
       navigate("/");
-    }catch(error){
+    } catch (error) {
       console.error("login failed:", error);
-      // 顯示錯誤訊息給用戶
+      // display error message to user
       if (error instanceof Error) {
         setError(error.message);
       } else {
@@ -57,13 +98,13 @@ export default function Login() {
     } finally {
       setLoading(false);
     }
-  }
+  };
   return (
     <PageLayout>
       <Header />
       <div className="login-wrapper">
         <div className="login-panel">
-          {/* 關閉按鈕 */}
+          {/* close button*/}
           <button
             className="close-button"
             onClick={() => navigate("/")}
@@ -74,35 +115,34 @@ export default function Login() {
 
           <h2>Please log in!</h2>
 
-          {/* 錯誤訊息 */}
           <ErrorMessage message={error} onClose={() => setError(null)} />
 
           <div className="input-group">
             <input
-            type="email"
-            placeholder="Email"
-            value= {email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setError(null); // 清除錯誤當用戶開始輸入
-            }}
-            disabled={loading}
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setError(null); // 清除錯誤當用戶開始輸入
+              }}
+              disabled={loading}
             />
             <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e)=> {
-              setPassword(e.target.value);
-              setError(null); // 清除錯誤當用戶開始輸入
-            }}
-            disabled={loading}
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setError(null); // 清除錯誤當用戶開始輸入
+              }}
+              disabled={loading}
             />
 
             <button
-            className="submit-button"
-            onClick={handleSubmit}
-            disabled={loading}
+              className="submit-button"
+              onClick={handleSubmit}
+              disabled={loading}
             >
               {loading ? "登入中..." : "SUBMIT"}
             </button>

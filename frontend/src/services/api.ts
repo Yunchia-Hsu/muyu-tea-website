@@ -1,4 +1,5 @@
 // API fetch
+
 export interface Course {
   id: number;
   title: string;
@@ -12,11 +13,19 @@ export interface LoginResponse {
   user: { id: number; email: string; username: string }; //user object
 }
 
+//token timeout handling 
+function getToken () {
+  return localStorage.getItem('token');
+}
+
+function clearToken () {
+  localStorage.removeItem('token');
+}
+
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
 async function fetcher<T>(endpoint: string, options?: RequestInit): Promise<T> {
-  // assemble URL
   const url = `${API_BASE_URL}${endpoint}`;
   //send request
   const response = await fetch(url, {
@@ -37,6 +46,12 @@ async function fetcher<T>(endpoint: string, options?: RequestInit): Promise<T> {
       : isJson
       ? await response.json()
       : await response.text();
+  //token timeout handling
+  if (response.status === 401) {
+    clearToken();
+    // Redirect will be handled by the component that catches this error
+    throw new Error("SESSION_EXPIRED");
+  }
 
   if (!response.ok) {
       let errormessage;

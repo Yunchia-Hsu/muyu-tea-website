@@ -32,6 +32,11 @@ export default function Coursecontent() {
         const data = await courseAPI.getCourse(Number(id));
         setCourse(data);
       } catch (err) {
+        // Handle session expired - redirect to login
+        if (err instanceof Error && err.message === "SESSION_EXPIRED") {
+          navigate("/login");
+          return;
+        }
         setError(err instanceof Error ? err.message : "Failed to fetch course");
         console.error("Error fetching course:", err);
       } finally {
@@ -76,6 +81,11 @@ export default function Coursecontent() {
       await courseAPI.enrollCourse(course.id, token);
       setEnrollmsg("Thank you for enrolled the course.");
     } catch (error) {
+      // Handle session expired - redirect to login
+      if (error instanceof Error && error.message === "SESSION_EXPIRED") {
+        navigate("/login");
+        return;
+      }
       console.error("enroll failed:", error);
       if (error instanceof Error) {
         setEnrollmsg(error.message);

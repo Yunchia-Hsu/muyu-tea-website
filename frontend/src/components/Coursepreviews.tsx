@@ -26,6 +26,11 @@ function Coursepreview() {
         const data = await courseAPI.getAllCourses();
         setCourses(data);
       } catch (err) {
+        // Handle session expired - redirect to login
+        if (err instanceof Error && err.message === "SESSION_EXPIRED") {
+          navigate("/login");
+          return;
+        }
         setError(
           err instanceof Error ? err.message : "Failed to fetch courses"
         );

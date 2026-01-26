@@ -9,7 +9,7 @@ interface OptimizedImageProps {
   style?: React.CSSProperties;
 }
 
-// 將 .png 路徑轉換為 .webp 路徑
+// Convert .png path to .webp path
 const getWebPSrc = (src: string): string => {
   return src.replace(/\.(png|jpg|jpeg)$/i, ".webp");
 };
@@ -36,7 +36,7 @@ export default function OptimizedImage({
 
   return (
     <picture>
-      {/* WebP  - modern browser */}
+      {/* WebP - modern browser */}
       <source srcSet={webpSrc} type="image/webp" />
       {/* PNG fallback - old browser */}
       <img

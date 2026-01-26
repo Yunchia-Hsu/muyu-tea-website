@@ -41,6 +41,9 @@ app.get("/health/db", async (req, res, next) => {
 // app.post("/api/test/no-content", (req, res) => {
 //   res.status(204).send();
 // });
+app.get("/api/test/401", (req, res) => {
+  res.status(401).json({ message: "Token expired" });
+});
 
 
 app.use(errorHandler);

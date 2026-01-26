@@ -9,6 +9,46 @@ import { useState } from "react";
 import { authAPI } from "../services/api";
 import ErrorMessage from "../components/ErrorMessage";
 
+//email validation check
+function isValidEmail(email: string): boolean {
+  
+  const parts = email.split("@");
+  const [local, domain] = parts;
+
+  // 3. @ must contain sth before @
+  if (local.length === 0) return false;
+
+  //  @ must contain.
+  const domainParts = domain.split(".");
+  if (domainParts.length < 2) return false;
+
+  //  . ...@...
+  if (domainParts.some(part => part.length === 0)) return false;
+
+  return true;
+}
+
+function validateEmail(email:string): {valid: boolean; error?: string}{
+ // Check for empty 
+  if (!email.trim()){
+    return {valid: false, error: "Email cannot be empty"};
+  }
+   // Check for spaces 
+  if (email.includes(" ")){
+    return {valid: false, error: "Email cannot contain spaces"};
+  }
+   // Check for multiple @ symbols 
+  const atSymbolCount = (email.match(/@/g) || []).length; // find /@/  global
+  if (atSymbolCount !== 1){
+    return {valid: false, error: "Email must contain exactly one '@' symbol"};
+  }
+    // Check basic email format: something@something.something 
+  if (!isValidEmail(email)){
+    return {valid: false, error: "Email format is invalid"};
+  }
+    return {valid: true};
+}
+
 export default function Register() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -27,11 +67,12 @@ export default function Register() {
       setError("Please fill in all fields");
       return;
     }
-
-    if (!email.includes("@")) {
-      setError("Please enter a valid email address");
-      return;
-    }
+     // Validate email
+     const emailValidation = validateEmail(email);
+     if (!emailValidation.valid) {
+       setError(emailValidation.error || "Invalid email");
+       return;
+     }
 
     if (password.length < 6) {
       setError("Password must be at least 6 characters long");
