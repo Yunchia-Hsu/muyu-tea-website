@@ -44,4 +44,38 @@
   .slogan-button:hover {
     opacity: 0.8;
   }
+
+/* Tablet */
+@media (max-width: 768px) {
+  .slogan-title {
+    font-size: 36px;
+  }
+  .slogan-subtitle {
+    font-size: 22px;
+    margin-bottom: 30px;
+  }
+  .slogan-button {
+    padding: 10px 24px;
+    font-size: 13px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .slogan {
+    margin-top: -40px;
+    padding: 0 15px;
+  }
+  .slogan-title {
+    font-size: 28px;
+  }
+  .slogan-subtitle {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  .slogan-button {
+    padding: 10px 20px;
+    font-size: 12px;
+  }
+}
  

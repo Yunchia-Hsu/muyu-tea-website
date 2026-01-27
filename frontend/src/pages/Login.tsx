@@ -107,7 +107,8 @@ export default function Login() {
           {/* close button*/}
           <button
             className="close-button"
-            onClick={() => navigate("/")}
+            // onClick={() => navigate("/")}
+            onClick={() => navigate(-1)} 
             aria-label="Close"
           >
             ✕

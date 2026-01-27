@@ -93,7 +93,11 @@
     font-size: 20px;
     letter-spacing: 1px;
     box-sizing: border-box;
-    
+    background-color: #2f2a26;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
 }
 .input-group button:hover {
     opacity: 0.8;

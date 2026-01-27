@@ -114,10 +114,10 @@ export default function Register() {
       <Header />
       <div className="login-wrapper">
         <div className="login-panel">
-          {/* 關閉按鈕 */}
+          {/* close button*/}
           <button
             className="close-button"
-            onClick={() => navigate("/")}
+            onClick={() => navigate(-1)} 
             aria-label="Close"
           >
             ✕
@@ -125,7 +125,6 @@ export default function Register() {
 
           <h2>Please sign up!</h2>
 
-          {/* 錯誤訊息 */}
           <ErrorMessage message={error} onClose={() => setError(null)} />
 
           <div className="input-group">
