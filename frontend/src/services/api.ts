@@ -14,9 +14,9 @@ export interface LoginResponse {
 }
 
 //token timeout handling 
-function getToken () {
-  return localStorage.getItem('token');
-}
+// function getToken () {
+//   return localStorage.getItem('token');
+// }
 
 function clearToken () {
   localStorage.removeItem('token');
