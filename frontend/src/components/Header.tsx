@@ -4,13 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuthModal } from "../contexts/AuthModalContext";
 
-function getToken() {
-  return localStorage.getItem("token");
-}
-
 function Header() {
   const { openAuthModal } = useAuthModal();
-  const [token, setToken] = useState<string | null>(getToken());
   const navigate = useNavigate();
   const [user, setUser] = useState<{ username: string; email: string } | null>(
     null
@@ -29,7 +24,6 @@ function Header() {
       } else {
         setUser(null);
       }
-      setToken(getToken());
     };
 
     readUser();
