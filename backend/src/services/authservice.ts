@@ -73,7 +73,7 @@ export const login = async (email: string, password: string) => {
     },
     process.env.JWT_SECRET || "supersecretkey",
     {
-      expiresIn: "100h",
+      expiresIn: "48h",
     }
   );
   //return token user

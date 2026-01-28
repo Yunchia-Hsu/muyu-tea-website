@@ -3,11 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { courseAPI } from "../services/api";
 import type { Course } from "../services/api";
 import OptimizedImage from "./OptimizedImage";
+import { useAuthModal } from "../contexts/AuthModalContext";
+import { courseSlug } from "../utils/slugify";
 import "./Coursepreviews.css";
 
 function Coursepreview() {
   const [courses, setCourses] = useState<Course[]>([]);
   const navigate = useNavigate();
+  const { openAuthModal } = useAuthModal();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [centerIndex, setCenterIndex] = useState(0);
@@ -28,7 +31,7 @@ function Coursepreview() {
       } catch (err) {
         // Handle session expired - redirect to login
         if (err instanceof Error && err.message === "SESSION_EXPIRED") {
-          navigate("/login");
+          openAuthModal("login");
           return;
         }
         setError(
@@ -60,10 +63,14 @@ function Coursepreview() {
 
   const [leftIdx, centerIdx, rightIdx] = getVisibleImages();
 
+  // Helper to generate course URL with slug
+  const getCourseUrl = (course: Course | undefined) =>
+    course ? `/coursecontent/${courseSlug(course.id, course.title)}` : "#";
+
   if (loading) {
     return (
       <header className="Coursepreview">
-        <div className="loading-message">Loading courses...</div>
+        <div className="loading-message">Loading courses...</div>   
       </header>
     );
   }
@@ -101,7 +108,14 @@ function Coursepreview() {
 
         <div className="courses-container">
           {/* left side course card*/}
-          <div className="course-card course-card-left">
+          <div
+            className="course-card course-card-left"
+            onClick={() => navigate(getCourseUrl(courses[leftIdx]))}
+            onKeyDown={(e) => e.key === "Enter" && navigate(getCourseUrl(courses[leftIdx]))}
+            role="button"
+            tabIndex={0}
+            aria-label={`View course: ${courses[leftIdx]?.title}`}
+          >
             <div className="course-image">
               {!loadedImages.has(leftIdx) && <div className="image-skeleton" />}
               <OptimizedImage
@@ -117,7 +131,14 @@ function Coursepreview() {
           </div>
 
           {/* middle side course card*/}
-          <div className="course-card course-card-center">
+          <div
+            className="course-card course-card-center"
+            onClick={() => navigate(getCourseUrl(courses[centerIdx]))}
+            onKeyDown={(e) => e.key === "Enter" && navigate(getCourseUrl(courses[centerIdx]))}
+            role="button" //accessibility
+            tabIndex={0}
+            aria-label={`View course: ${courses[centerIdx]?.title}`} // can be read out 「View course: xxx」
+          >
             <div className="course-image">
               {!loadedImages.has(centerIdx) && <div className="image-skeleton" />}
               <OptimizedImage
@@ -129,20 +150,18 @@ function Coursepreview() {
             </div>
             <div className="course-info">
               <h3>{courses[centerIdx]?.title}</h3>
-              {/* <p className="course-description">{courses[centerIdx]?.description}</p> */}
-              <button
-                onClick={() =>
-                  navigate(`/coursecontent/${courses[centerIdx]?.id}`)
-                }
-                className="classbutton"
-              >
-                Go to the course
-              </button>
             </div>
           </div>
 
           {/* right side course card */}
-          <div className="course-card course-card-right">
+          <div
+            className="course-card course-card-right"
+            onClick={() => navigate(getCourseUrl(courses[rightIdx]))}
+            onKeyDown={(e) => e.key === "Enter" && navigate(getCourseUrl(courses[rightIdx]))}
+            role="button"
+            tabIndex={0}
+            aria-label={`View course: ${courses[rightIdx]?.title}`}
+          >
             <div className="course-image">
               {!loadedImages.has(rightIdx) && <div className="image-skeleton" />}
               <OptimizedImage

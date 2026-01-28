@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import { courseAPI } from "../services/api";
 import Header from "../components/Header";
 import OptimizedImage from "../components/OptimizedImage";
+import { useAuthModal } from "../contexts/AuthModalContext";
+import { extractIdFromSlug, courseSlug } from "../utils/slugify";
 import "./CourseContent.css";
 import type { Course } from "../services/api";
 
@@ -15,7 +17,9 @@ type ErrorType = "NOT_FOUND" | "NETWORK" | "INVALID_ID" | null;
 export default function Coursecontent() {
   const { id } = useParams<{ id: string }>(); // get course id from url
   const navigate = useNavigate();
+  const { openAuthModal } = useAuthModal();
   const [course, setCourse] = useState<Course | null>(null);
+  const [allCourses, setAllCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [errorType, setErrorType] = useState<ErrorType>(null);
@@ -42,10 +46,19 @@ export default function Coursecontent() {
     return () => clearInterval(timer);
   }, [errorType, navigate]);
 
+  // Reset state when course id changes
+  useEffect(() => {
+    setImageLoaded(false);
+    setEnrollmsg(null);
+    setError(null);
+    setErrorType(null);
+  }, [id]);
+
   useEffect(() => {
     async function fetchCourse() {
-      // Validate ID format
-      if (!id || isNaN(Number(id))) {
+      // Extract and validate ID from slug (e.g., "1-tea-brewing" → 1)
+      const courseId = id ? extractIdFromSlug(id) : -1;
+      if (courseId < 0) {
         setError("Invalid course ID");
         setErrorType("INVALID_ID");
         setLoading(false);
@@ -54,7 +67,10 @@ export default function Coursecontent() {
 
       try {
         setLoading(true);
-        const data = await courseAPI.getCourse(Number(id));
+        const [data, all] = await Promise.all([
+          courseAPI.getCourse(courseId),
+          courseAPI.getAllCourses(),
+        ]);
 
         if (!data) {
           setError("Course not found");
@@ -63,10 +79,11 @@ export default function Coursecontent() {
         }
 
         setCourse(data);
+        setAllCourses(all);
       } catch (err) {
-        // Handle session expired - redirect to login
+        // Handle session expired - open login modal
         if (err instanceof Error && err.message === "SESSION_EXPIRED") {
-          navigate("/login");
+          openAuthModal("login");
           return;
         }
 
@@ -135,15 +152,15 @@ export default function Coursecontent() {
       setEnroll(true);
       const token = localStorage.getItem("token");
       if (!token) {
-        navigate("/login");
+        openAuthModal("login");
         return;
       }
       await courseAPI.enrollCourse(course.id, token);
       setEnrollmsg("Thank you for enrolled the course.");
     } catch (error) {
-      // Handle session expired - redirect to login
+      // Handle session expired - open login modal
       if (error instanceof Error && error.message === "SESSION_EXPIRED") {
-        navigate("/login");
+        openAuthModal("login");
         return;
       }
       console.error("enroll failed:", error);
@@ -170,6 +187,17 @@ export default function Coursecontent() {
       </PageLayout>
     );
   }
+
+  // Compute prev/next courses ID loop 
+  const currentIndex = allCourses.findIndex((c) => c.id === course.id);
+  const prevCourse =
+    allCourses.length > 1
+      ? allCourses[currentIndex === 0 ? allCourses.length - 1 : currentIndex - 1]
+      : null;
+  const nextCourse =
+    allCourses.length > 1
+      ? allCourses[currentIndex === allCourses.length - 1 ? 0 : currentIndex + 1]
+      : null;
 
   return (
     <PageLayout>
@@ -199,6 +227,36 @@ export default function Coursecontent() {
         </button>
         {enrollmsg && <p className="enroll-message">{enrollmsg}</p>}
       </div>
+
+      {/* Prev / Next course navigation */}
+      {allCourses.length > 1 && (
+        <div className="course-nav">
+          {prevCourse && (
+            <button
+              className="course-nav-btn course-nav-prev"
+              onClick={() => navigate(`/coursecontent/${courseSlug(prevCourse.id, prevCourse.title)}`)}
+            >
+              <span className="course-nav-arrow">&larr;</span>
+              <span className="course-nav-label">
+                <span className="course-nav-hint">Previous</span>
+                <span className="course-nav-title">{prevCourse.title}</span>
+              </span>
+            </button>
+          )}
+          {nextCourse && (
+            <button
+              className="course-nav-btn course-nav-next"
+              onClick={() => navigate(`/coursecontent/${courseSlug(nextCourse.id, nextCourse.title)}`)}
+            >
+              <span className="course-nav-label">
+                <span className="course-nav-hint">Next</span>
+                <span className="course-nav-title">{nextCourse.title}</span>
+              </span>
+              <span className="course-nav-arrow">&rarr;</span>
+            </button>
+          )}
+        </div>
+      )}
     </PageLayout>
   );
 }
