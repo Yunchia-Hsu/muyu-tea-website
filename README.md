@@ -31,6 +31,8 @@
   - **TypeScript** 5.7.3
   - **PostgreSQL** 16
 
+ ### User Flow
+ <img src="./screenshots/wireframe.png" alt="Course Detail" width="600" />
  ### Wireframing
   <img src="./screenshots/wireframe.png" alt="Course Detail" width="600" />
   
