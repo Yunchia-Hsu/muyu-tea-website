@@ -40,5 +40,6 @@
 }
 
   /* body { outline: 2px solid red; overflow-x: hidden; }
-  * { outline: 1px solid rgba(255,0,0,.25); }
-html, body { overflow-x: hidden; } */
+  * { outline: 1px solid rgba(255,0,0,.25); } */
+
+  html, body { overflow-x: hidden; }

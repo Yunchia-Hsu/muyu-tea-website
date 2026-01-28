@@ -1,0 +1,91 @@
+/* src/components/AuthModal.css */
+.auth-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  
+  .auth-modal-content {
+    width: min(620px, calc(100vw - 32px));
+    max-height: calc(100vh - 32px);
+    overflow: auto;
+  }
+  
+  /* 如果你原本 .login-panel 有 transform: translateY(-140px) 會讓 modal 飄上去
+     在 modal 裡強制取消 */
+  .auth-modal-content .login-panel {
+    transform: none !important;
+    width: 100% !important;
+  }
+
+  /* Tablet */
+  @media (max-width: 768px) {
+    .auth-modal-content {
+      width: min(520px, calc(100vw - 32px));
+    }
+
+    .auth-modal-content .login-panel {
+      padding: 28px 20px;
+    }
+
+    .auth-modal-content .login-panel h2 {
+      font-size: 26px;
+    }
+
+    .auth-modal-content .input-group input,
+    .auth-modal-content .input-group button {
+      width: 85%;
+    }
+
+    .auth-modal-content .action-button-login {
+      width: 20%;
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 480px) {
+    .auth-modal-overlay {
+      align-items: flex-start;
+      padding-top: 24px;
+    }
+
+    .auth-modal-content {
+      width: calc(100vw - 24px);
+    }
+
+    .auth-modal-content .login-panel {
+      padding: 24px 16px;
+      border-radius: 12px;
+    }
+
+    .auth-modal-content .login-panel h2 {
+      font-size: 22px;
+    }
+
+    .auth-modal-content .input-group input,
+    .auth-modal-content .input-group button {
+      width: 100%;
+      font-size: 16px;
+    }
+
+    .auth-modal-content .input-group input {
+      padding: 16px;
+    }
+
+    .auth-modal-content .action-button {
+      /* flex-direction: column; */
+      gap: 8px;
+    }
+
+    .auth-modal-content .action-button h3 {
+      margin: 0;
+    }
+
+    .auth-modal-content .action-button-login {
+      width: 30%;
+    }
+  }

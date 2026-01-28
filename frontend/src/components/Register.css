@@ -26,7 +26,7 @@
 }
 .login-panel{
     width: 100%;
-    background-color: #969292;
+    background-color: #c0bbbb;
     flex-direction: column;
     width: 60%;
     border-radius: 15px;
@@ -36,7 +36,7 @@
     position: relative;
 }
 
-/* 關閉按鈕 */
+/* close button*/
 .close-button {
     position: absolute;
     top: 16px;
@@ -115,7 +115,7 @@
 .action-button-login{
     width:15%;
     font-size: 15px;
-    background-color: #C0BDC3;
+    background-color: #969797;
     line-height: 32px;
     padding: 0px;
     height: 32px;
