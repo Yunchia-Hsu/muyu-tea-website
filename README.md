@@ -32,7 +32,7 @@
   - **PostgreSQL** 16
 
  ### User Flow
- <img src="./screenshots/user-flow.png" alt="User Flow" width="600" />
+ <img src="./screenshots/user-flow.png" alt="User Flow" width="450" />
  
  ### Wireframing
   <img src="./screenshots/wireframe.png" alt="Course Detail" width="600" />
