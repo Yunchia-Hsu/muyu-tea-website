@@ -23,11 +23,10 @@ function App() {
           {/* Redirect invalid routes to home */}
           <Route path="/coursecontent" element={<Navigate to="/" replace />} />
           <Route path="/course" element={<Navigate to="/" replace />} />
-          <Route path="*" element={<Navigate to="/" replace />} /> // no match
-          route redirect to home
+          <Route path="*" element={<Navigate to="/" replace />} /> // no match route redirect to home
         </Routes>
       </BrowserRouter>
-      <AuthModal />
+      <AuthModal /> 
     </AuthModalProvider>
   );
 }

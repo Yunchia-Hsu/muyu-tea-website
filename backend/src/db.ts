@@ -1,6 +1,6 @@
 // read .env  DATABASE_URL
 // create Pool
-// export 出去讓 routes 用
+// export data to routes 
 import dotenv from "dotenv";
 import { Pool } from "pg";
 

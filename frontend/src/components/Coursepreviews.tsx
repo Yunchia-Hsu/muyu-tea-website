@@ -14,7 +14,7 @@ function Coursepreview() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [centerIndex, setCenterIndex] = useState(0);
-  // 追蹤每張圖片的載入狀態
+  // check pictures' loading status
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
 
   const handleImageLoad = (index: number) => {
@@ -70,7 +70,7 @@ function Coursepreview() {
   if (loading) {
     return (
       <header className="Coursepreview">
-        <div className="loading-message">Loading courses...</div>   
+        <div className="loading-message">Loading courses...</div>
       </header>
     );
   }
@@ -111,7 +111,9 @@ function Coursepreview() {
           <div
             className="course-card course-card-left"
             onClick={() => navigate(getCourseUrl(courses[leftIdx]))}
-            onKeyDown={(e) => e.key === "Enter" && navigate(getCourseUrl(courses[leftIdx]))}
+            onKeyDown={(e) =>
+              e.key === "Enter" && navigate(getCourseUrl(courses[leftIdx]))
+            }
             role="button"
             tabIndex={0}
             aria-label={`View course: ${courses[leftIdx]?.title}`}
@@ -134,13 +136,17 @@ function Coursepreview() {
           <div
             className="course-card course-card-center"
             onClick={() => navigate(getCourseUrl(courses[centerIdx]))}
-            onKeyDown={(e) => e.key === "Enter" && navigate(getCourseUrl(courses[centerIdx]))}
+            onKeyDown={(e) =>
+              e.key === "Enter" && navigate(getCourseUrl(courses[centerIdx]))
+            }
             role="button" //accessibility
             tabIndex={0}
             aria-label={`View course: ${courses[centerIdx]?.title}`} // can be read out 「View course: xxx」
           >
             <div className="course-image">
-              {!loadedImages.has(centerIdx) && <div className="image-skeleton" />}
+              {!loadedImages.has(centerIdx) && (
+                <div className="image-skeleton" />
+              )}
               <OptimizedImage
                 src={courses[centerIdx]?.image_url ?? "/images/tea-intro.png"}
                 alt={courses[centerIdx]?.title ?? "Course image"}
@@ -157,13 +163,17 @@ function Coursepreview() {
           <div
             className="course-card course-card-right"
             onClick={() => navigate(getCourseUrl(courses[rightIdx]))}
-            onKeyDown={(e) => e.key === "Enter" && navigate(getCourseUrl(courses[rightIdx]))}
+            onKeyDown={(e) =>
+              e.key === "Enter" && navigate(getCourseUrl(courses[rightIdx]))
+            }
             role="button"
             tabIndex={0}
             aria-label={`View course: ${courses[rightIdx]?.title}`}
           >
             <div className="course-image">
-              {!loadedImages.has(rightIdx) && <div className="image-skeleton" />}
+              {!loadedImages.has(rightIdx) && (
+                <div className="image-skeleton" />
+              )}
               <OptimizedImage
                 src={courses[rightIdx]?.image_url ?? "/images/tea-intro.png"}
                 alt={courses[rightIdx]?.title ?? "Course image"}
