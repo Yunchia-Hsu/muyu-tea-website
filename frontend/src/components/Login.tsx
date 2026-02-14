@@ -4,6 +4,23 @@ import ErrorMessage from "./ErrorMessage";
 import { authAPI } from "../services/api";
 import { validateEmail } from "../utils/emailValidation";
 import "./Register.css";
+
+function validateLoginInputs(email: string, password: string): string | null {
+  if (!email || !password) {
+    return "Please fill in all fields";
+  }
+  const emailValidation = validateEmail(email);
+  if (!emailValidation.valid) {
+    return emailValidation.error || "Invalid email";
+  }
+  return null;
+}
+
+function persistAuth(res: { token?: string; user?: unknown }) {
+  if (res.token) localStorage.setItem("token", res.token);
+  if (res.user) localStorage.setItem("user", JSON.stringify(res.user));
+  window.dispatchEvent(new Event("auth-changed"));
+}
 export function LoginForm({
   onClose,
   onGoRegister,
@@ -19,14 +36,9 @@ export function LoginForm({
   const handleSubmit = async () => {
     setError(null);
 
-    if (!email || !password) {
-      setError("Please fill in all fields");
-      return;
-    }
-
-    const emailValidation = validateEmail(email);
-    if (!emailValidation.valid) {
-      setError(emailValidation.error || "Invalid email");
+    const validationError = validateLoginInputs(email, password);
+    if (validationError) {
+      setError(validationError);
       return;
     }
 
@@ -35,11 +47,7 @@ export function LoginForm({
       const res = await authAPI.login({ email, password });
       console.log("login success:", res);
 
-      if (res.token) localStorage.setItem("token", res.token);
-      if (res.user) localStorage.setItem("user", JSON.stringify(res.user));
-
-      // inform global ：log in status has changed （Header updated）
-      window.dispatchEvent(new Event("auth-changed"));
+      persistAuth(res);
 
       // close modal, stay at the same  context
       onClose();

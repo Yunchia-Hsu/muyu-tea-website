@@ -5,6 +5,37 @@ import { authAPI } from "../services/api";
 import ErrorMessage from "./ErrorMessage";
 import { validateEmail } from "../utils/emailValidation";
 
+function validateRegisterInputs(
+  username: string,
+  email: string,
+  password: string,
+  confirmpassword: string
+): string | null {
+  if (!username || !email || !password || !confirmpassword) {
+    return "Please fill in all fields";
+  }
+  const emailValidation = validateEmail(email);
+  if (!emailValidation.valid) {
+    return emailValidation.error || "Invalid email";
+  }
+  if (password.length < 6) {
+    return "Password must be at least 6 characters long";
+  }
+  if (password !== confirmpassword) {
+    return "Passwords do not match";
+  }
+  return null;
+}
+
+function buildRegisterPayload(
+  username: string,
+  email: string,
+  password: string,
+  confirmpassword: string
+) {
+  return { username, email, password, confirmpassword };
+}
+
 export function Register({
   onClose,
   onGoLogin,
@@ -23,42 +54,28 @@ export function Register({
     // clean previous error
     setError(null);
 
-    // frontend validation
-    if (!username || !email || !password || !confirmpassword) {
-      setError("Please fill in all fields");
-      return;
-    }
-    // Validate email
-    const emailValidation = validateEmail(email);
-    if (!emailValidation.valid) {
-      setError(emailValidation.error || "Invalid email");
-      return;
-    }
-
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters long");
-      return;
-    }
-
-    if (password !== confirmpassword) {
-      setError("Passwords do not match");
+    const validationError = validateRegisterInputs(
+      username,
+      email,
+      password,
+      confirmpassword
+    );
+    if (validationError) {
+      setError(validationError);
       return;
     }
 
     try {
       setLoading(true);
-      const res = await authAPI.register({
-        username,
-        email,
-        password,
-        confirmpassword,
-      });
+      const res = await authAPI.register(
+        buildRegisterPayload(username, email, password, confirmpassword)
+      );
       console.log("register success:", res);
-      // 註冊成功後：切換到 Login modal（不跳頁）
+      // after registration navigate to login 
       onGoLogin();
     } catch (error) {
       console.error("register failed:", error);
-      // 顯示錯誤訊息給用戶
+      
       if (error instanceof Error) {
         setError(error.message);
       } else {

@@ -7,13 +7,43 @@ import { useAuthModal } from "../contexts/AuthModalContext";
 import { courseSlug } from "../utils/slugify";
 import "./Coursepreviews.css";
 
+function useCarousel(total: number) {
+  const [centerIndex, setCenterIndex] = useState(0);
+
+  const safeTotal = Math.max(total, 0);
+  const lastIndex = safeTotal > 0 ? safeTotal - 1 : 0;
+
+  const handlePrev = () => {
+    if (safeTotal <= 1) return;
+    setCenterIndex((prev) => (prev === 0 ? lastIndex : prev - 1));
+  };
+
+  const handleNext = () => {
+    if (safeTotal <= 1) return;
+    setCenterIndex((prev) => (prev === lastIndex ? 0 : prev + 1));
+  };
+
+  const leftIdx = safeTotal > 0 ? (centerIndex === 0 ? lastIndex : centerIndex - 1) : 0;
+  const rightIdx = safeTotal > 0 ? (centerIndex === lastIndex ? 0 : centerIndex + 1) : 0;
+
+  return {
+    centerIndex,
+    leftIdx,
+    rightIdx,
+    handlePrev,
+    handleNext,
+  };
+}
+
 function Coursepreview() {
   const [courses, setCourses] = useState<Course[]>([]);
   const navigate = useNavigate();
   const { openAuthModal } = useAuthModal();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [centerIndex, setCenterIndex] = useState(0);
+  const { leftIdx, centerIndex, rightIdx, handlePrev, handleNext } = useCarousel(
+    courses.length
+  );
   // check pictures' loading status
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
 
@@ -46,22 +76,7 @@ function Coursepreview() {
     fetchCourses();
   }, []);
 
-  const handlePrev = () => {
-    setCenterIndex((prev) => (prev === 0 ? courses.length - 1 : prev - 1));
-  };
-
-  const handleNext = () => {
-    setCenterIndex((prev) => (prev === courses.length - 1 ? 0 : prev + 1));
-  };
-
-  const getVisibleImages = () => {
-    const left = centerIndex === 0 ? courses.length - 1 : centerIndex - 1;
-    const center = centerIndex;
-    const right = centerIndex === courses.length - 1 ? 0 : centerIndex + 1;
-    return [left, center, right];
-  };
-
-  const [leftIdx, centerIdx, rightIdx] = getVisibleImages();
+  const centerIdx = centerIndex;
 
   // Helper to generate course URL with slug
   const getCourseUrl = (course: Course | undefined) =>

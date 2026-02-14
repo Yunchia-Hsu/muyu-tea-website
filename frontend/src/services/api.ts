@@ -13,13 +13,8 @@ export interface LoginResponse {
   user: { id: number; email: string; username: string }; //user object
 }
 
-//token timeout handling 
-// function getToken () {
-//   return localStorage.getItem('token');
-// }
-
-function clearToken () {
-  localStorage.removeItem('token');
+function clearToken() {
+  localStorage.removeItem("token");
 }
 
 const API_BASE_URL =
@@ -39,13 +34,19 @@ async function fetcher<T>(endpoint: string, options?: RequestInit): Promise<T> {
   //check if it's JSON
   const contentType = response.headers.get("content-type") || "";
   const isJson = contentType.includes("application/json");
+  //Parse the response body into data
+  let data;
 
-  const data =
-    response.status === 204
-      ? null
-      : isJson
-      ? await response.json()
-      : await response.text();
+  if (response.status === 204) {
+    // 204 means "No Content", so we set data to null
+    data = null;
+  } else if (isJson) {
+    // If the header says it's JSON, we parse the response body into an object
+    data = await response.json();
+  } else {
+    // Otherwise, we just read the response body as plain text
+    data = await response.json();
+  }
   //token timeout handling
   if (response.status === 401) {
     clearToken();
@@ -54,14 +55,14 @@ async function fetcher<T>(endpoint: string, options?: RequestInit): Promise<T> {
   }
 
   if (!response.ok) {
-      let errormessage;
-      if (isJson && data && typeof data === "object" && "message" in data){
-        errormessage = (data as any).message;
-      } else if (typeof data === "string" && data) {
-        errormessage = data;
-      } else {
-        errormessage = `API request failed ${response.status})`;
-      }
+    let errormessage;
+    if (isJson && data && typeof data === "object" && "message" in data) {
+      errormessage = (data as any).message;
+    } else if (typeof data === "string" && data) {
+      errormessage = data;
+    } else {
+      errormessage = `API request failed ${response.status}`;
+    }
     throw new Error(errormessage);
   }
   return data as T;
@@ -114,4 +115,3 @@ export const authAPI = {
       },
     }),
 };
-
