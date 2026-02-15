@@ -32,8 +32,9 @@ export function AuthModalProvider({ children }: { children: React.ReactNode }) {
     </AuthModalContext.Provider>
   );
 }
+// let any components to call modals
 export function useAuthModal() {
-  const ctx = useContext(AuthModalContext); //在任何子元件拿資料
+  const ctx = useContext(AuthModalContext); 
   if (!ctx) {
     throw new Error("useAuthModal must be used within <AuthModalProvider>");
   }

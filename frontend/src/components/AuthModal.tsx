@@ -28,7 +28,7 @@ export default function AuthModal() {
       aria-modal="true"
       onClick={(e) => {
         // click dark area to close the modal
-        if (e.target === e.currentTarget) closeAuthModal(); //target is what you click
+        if (e.target === e.currentTarget) closeAuthModal(); //target is where you click
       }}
     >
       <div className="auth-modal-content">
