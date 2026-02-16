@@ -17,10 +17,11 @@ function validateLoginInputs(email: string, password: string): string | null {
 }
 
 function persistAuth(res: { token?: string; user?: unknown }) {
-  if (res.token) localStorage.setItem("token", res.token);
+  if (res.token) localStorage.setItem("token", res.token);// res = response body
   if (res.user) localStorage.setItem("user", JSON.stringify(res.user));
-  window.dispatchEvent(new Event("auth-changed"));
+  window.dispatchEvent(new Event("auth-changed"));// broadcast to the browser that quth has changed
 }
+
 export function LoginForm({
   onClose,
   onGoRegister,
@@ -34,7 +35,7 @@ export function LoginForm({
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    setError(null);
+    setError(null);//clean old error messages
 
     const validationError = validateLoginInputs(email, password);
     if (validationError) {
@@ -85,7 +86,7 @@ export function LoginForm({
               setEmail(e.target.value);
               setError(null);
             }}
-            disabled={loading}
+            disabled={loading}//no changing while loading
           />
 
           <input
@@ -105,7 +106,7 @@ export function LoginForm({
             disabled={loading}
             type="button"
           >
-            {loading ? "登入中..." : "SUBMIT"}
+            {loading ? "loading..." : "SUBMIT"}
           </button>
         </div>
 

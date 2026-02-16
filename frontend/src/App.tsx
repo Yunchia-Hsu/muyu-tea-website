@@ -6,7 +6,7 @@ import Navbar from "./components/Navbar";
 import Teaintro from "./components/TeaIntro";
 // import Login from "./components/Login";
 import { AuthModalProvider } from "./contexts/AuthModalContext";
-import AuthModal from "./components/AuthModal";
+import AuthModal from "./contexts/AuthModal";
 
 import "./App.css";
 function App() {
@@ -23,10 +23,11 @@ function App() {
           {/* Redirect invalid routes to home */}
           <Route path="/coursecontent" element={<Navigate to="/" replace />} />
           <Route path="/course" element={<Navigate to="/" replace />} />
-          <Route path="*" element={<Navigate to="/" replace />} /> // no match route redirect to home
+          <Route path="*" element={<Navigate to="/" replace />} /> // no match
+          route redirect to home
         </Routes>
       </BrowserRouter>
-      <AuthModal /> 
+      <AuthModal />
     </AuthModalProvider>
   );
 }

@@ -106,7 +106,7 @@ function Coursepreview() {
               d="M8 18L14 12L8 6"
               stroke="currentColor"
               strokeWidth="5"
-              strokeLinecap="round"
+              strokeLinecap="butt"
               strokeLinejoin="round"
             />
           </svg>
@@ -195,14 +195,13 @@ function Coursepreview() {
           </div>
         </div>
 
-        <button className="carousel-btn carousel-btn-next" onClick={handleNext}>
+        <button className="carousel-btn carousel-btn-next" onClick={handleNext} >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path
-              
               d="M14 18L8 12L14 6"
               stroke="currentColor"
               strokeWidth="5"
-              strokeLinecap="round"
+              strokeLinecap="butt"
               strokeLinejoin="round"
             />
           </svg>

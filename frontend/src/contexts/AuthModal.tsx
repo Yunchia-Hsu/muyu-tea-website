@@ -1,9 +1,9 @@
 /*update  modal and broadcast to global */
 import { useEffect } from "react";
-import { useAuthModal } from "../contexts/AuthModalContext";
+import { useAuthModal } from "./AuthModalContext";
 import "./AuthModal.css";
-import {LoginForm} from "./Login";
-import {Register} from "./Register"
+import { LoginForm } from "../components/Login";
+import { Register } from "../components/Register";
 
 export default function AuthModal() {
   const { mode, closeAuthModal, openAuthModal } = useAuthModal();
@@ -38,9 +38,9 @@ export default function AuthModal() {
             onGoRegister={() => openAuthModal("register")}
           />
         ) : (
-          <Register 
-          onClose={closeAuthModal}
-          onGoLogin={() => openAuthModal("login")}
+          <Register
+            onClose={closeAuthModal}
+            onGoLogin={() => openAuthModal("login")}
           />
         )}
       </div>

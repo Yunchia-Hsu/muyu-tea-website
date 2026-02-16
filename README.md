@@ -38,6 +38,9 @@
   <img src="./screenshots/wireframe.png" alt="Course Detail" width="600" />
   
  ### Home Page                                                                           
+ <img src="./screenshots/data.png" alt="Course Detail" width="600" />
+
+ ### Home Page                                                                           
  <img src="./screenshots/home.png" alt="Course Detail" width="600" />
  
  ### Register Page                                                                             
