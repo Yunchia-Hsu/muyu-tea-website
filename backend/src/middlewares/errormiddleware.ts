@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from "express";
 
 export const errorHandler = (
   err: Error,
@@ -6,10 +6,11 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  console.error(err); // server log
+  // Log server-side errors for debugging/monitoring.
+  console.error(err);
 
-  // 統一回傳格式為 { message: "..." }
+  // Return a consistent error shape to clients.
   res.status(400).json({
-    message: err.message || 'Something went wrong',
+    message: err.message || "Something went wrong",
   });
 };

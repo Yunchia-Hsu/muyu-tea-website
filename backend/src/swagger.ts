@@ -29,5 +29,6 @@ const swaggerDefinition = () => {
 
 export const swaggerSpec = swaggerJSDoc({
     swaggerDefinition: swaggerDefinition(),
-    apis: ['./src/routes/*.ts', './src/controllers/*.ts'], // Path to the API docs
+    // Paths scanned for OpenAPI annotations.
+    apis: ["./src/routes/*.ts", "./src/controllers/*.ts"],
 });

@@ -1,10 +1,10 @@
-//mock database for every userto check
+// Public user shape returned to clients.
 export type User = {
   id: number;
   username: string;
   email: string;
 };
-//data base for insider backend
+// Internal user record shape including hashed password.
 export type UserRecord = {
   id: number;
   email: string;

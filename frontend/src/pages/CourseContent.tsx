@@ -88,9 +88,13 @@ export default function Coursecontent() {
         }
 
         // Determine error type for UX messaging.
-        const errorMessage = err instanceof Error ? err.message : "Failed to fetch course";
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to fetch course";
 
-        if (errorMessage.includes("not found") || errorMessage.includes("404")) {
+        if (
+          errorMessage.includes("not found") ||
+          errorMessage.includes("404")
+        ) {
           setErrorType("NOT_FOUND");
         } else {
           setErrorType("NETWORK");
@@ -123,7 +127,9 @@ export default function Coursecontent() {
           {errorType === "NOT_FOUND" && (
             <>
               <h2>Course Not Found</h2>
-              <p>The course you're looking for doesn't exist or has been removed.</p>
+              <p>
+                The course you're looking for doesn't exist or has been removed.
+              </p>
             </>
           )}
           {errorType === "INVALID_ID" && (
@@ -135,10 +141,15 @@ export default function Coursecontent() {
           {errorType === "NETWORK" && (
             <>
               <h2>Connection Error</h2>
-              <p>Unable to load the course. Please check your internet connection.</p>
+              <p>
+                Unable to load the course. Please check your internet
+                connection.
+              </p>
             </>
           )}
-          <p className="countdown-text">Redirecting to home in {countdown} seconds...</p>
+          <p className="countdown-text">
+            Redirecting to home in {countdown} seconds...
+          </p>
           <button onClick={() => navigate("/")}>Go Home Now</button>
         </div>
       </PageLayout>
@@ -192,11 +203,15 @@ export default function Coursecontent() {
   const currentIndex = allCourses.findIndex((c) => c.id === course.id);
   const prevCourse =
     allCourses.length > 1
-      ? allCourses[currentIndex === 0 ? allCourses.length - 1 : currentIndex - 1]
+      ? allCourses[
+          currentIndex === 0 ? allCourses.length - 1 : currentIndex - 1
+        ]
       : null;
   const nextCourse =
     allCourses.length > 1
-      ? allCourses[currentIndex === allCourses.length - 1 ? 0 : currentIndex + 1]
+      ? allCourses[
+          currentIndex === allCourses.length - 1 ? 0 : currentIndex + 1
+        ]
       : null;
 
   return (
@@ -234,7 +249,14 @@ export default function Coursecontent() {
           {prevCourse && (
             <button
               className="course-nav-btn course-nav-prev"
-              onClick={() => navigate(`/coursecontent/${courseSlug(prevCourse.id, prevCourse.title)}`)}
+              onClick={() =>
+                navigate(
+                  `/coursecontent/${courseSlug(
+                    prevCourse.id,
+                    prevCourse.title
+                  )}`
+                )
+              }
             >
               <span className="course-nav-arrow">&larr;</span>
               <span className="course-nav-label">
@@ -246,7 +268,14 @@ export default function Coursecontent() {
           {nextCourse && (
             <button
               className="course-nav-btn course-nav-next"
-              onClick={() => navigate(`/coursecontent/${courseSlug(nextCourse.id, nextCourse.title)}`)}
+              onClick={() =>
+                navigate(
+                  `/coursecontent/${courseSlug(
+                    nextCourse.id,
+                    nextCourse.title
+                  )}`
+                )
+              }
             >
               <span className="course-nav-label">
                 <span className="course-nav-hint">Next</span>

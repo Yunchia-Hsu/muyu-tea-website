@@ -14,26 +14,25 @@ export const register = async (
     const user = await authService.register(email, password, username);
     res.status(201).json({ message: "User registered successfully", user });
   } catch (error) {
-    next(error); //hand to middleware
+    next(error);
   }
 };
 
-//接收 request → 呼叫 login service → 回 JSON
-export const login = async (req:Request, res:Response, next:NextFunction): Promise<void> => {
-    //login logic here
-    try{
-        const {email, password} = req.body;
-        if (!email || !password) {
-            throw new Error('Email and password are required');
-        }
-        const result = await authService.login(email, password);//進service 驗證 傳送 token and user info
-        res.status(200).json(result);
-
+// Validate credentials and return JWT + user info.
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      throw new Error("Email and password are required");
     }
-    catch (error) {
-        //handle error
-        next(error);
-    }
+    const result = await authService.login(email, password);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
 };
-
 

@@ -1,6 +1,4 @@
-// read .env  DATABASE_URL
-// create Pool
-// export data to routes 
+// Initialize PostgreSQL connection using DATABASE_URL from .env.
 import dotenv from "dotenv";
 import { Pool } from "pg";
 

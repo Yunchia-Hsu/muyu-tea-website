@@ -30,7 +30,7 @@ app.get("/health/db", async (req, res, next) => {
     next(err);
   }
 });
-//for api Error("Unauthorized (text)") testing
+// Test endpoints for error-handling scenarios (kept disabled in production).
 // app.get("/api/test/text-error", (req, res) => {
 //   res.status(401).type("text/plain").send("Unauthorized (text)");
 // });

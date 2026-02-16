@@ -5,13 +5,13 @@ export const authMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  //1. from request take token
+  // Read bearer token from Authorization header.
   const authHeader = req.headers.authorization;
   if (!authHeader) {
     return res.status(401).json({ message: "No token provided" });
   }
-  //2.  authenticate if the token is correct
-  const token = authHeader.split(" ")[1]; //delete Bearer
+  // Validate token format and extract the raw JWT.
+  const token = authHeader.split(" ")[1];
   if (!token) {
     return res.status(401).json({ message: "Invalid token format" });
   }
@@ -21,11 +21,10 @@ export const authMiddleware = (
       process.env.JWT_SECRET || "supersecretkey"
     );
 
-    //3. Store the authenticated user information in req.user.
+    // Attach decoded payload for downstream handlers.
+    (req as any).user = decoded;
 
-    (req as any).user = decoded; //TypeScript doesn’t recognize the user property, so using as any is a way to temporarily bypass type checking.
-
-    //4.Decide whether to allow the request to proceed.
+    // Continue to the next handler if token is valid.
     next();
   } catch (error) {
     return res.status(401).json({ message: "Invalid or expired token" });

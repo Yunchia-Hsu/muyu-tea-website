@@ -16,7 +16,7 @@ function App() {
           <Route path="/coursecontent/:id" element={<CourseContent />} />
           <Route path="/coursecontent" element={<Navigate to="/" replace />} />
           <Route path="/course" element={<Navigate to="/" replace />} />
-          <Route path="*" element={<Navigate to="/" replace />} /> 
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
       <AuthModal />

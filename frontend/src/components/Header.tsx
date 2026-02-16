@@ -55,10 +55,8 @@ function Header() {
           </div>
         ) : (
           <div>
-
-          <button onClick={() => openAuthModal("login")}>Log in</button>
-        </div>
-
+            <button onClick={() => openAuthModal("login")}>Log in</button>
+          </div>
         )}
         <Link to="/"> Home </Link>
       </h3>

@@ -4,7 +4,7 @@ import { authMiddleware } from '../middlewares/authmiddleware';
 
 const router = Router();
 
-//GET /api/courses
+// GET /api/courses
 /**
  * @openapi
  * /api/courses:
