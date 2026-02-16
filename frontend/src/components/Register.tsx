@@ -26,7 +26,7 @@ function validateRegisterInputs(
   }
   return null;
 }
-
+// Keep payload shape in one place for maintainability.
 function buildRegisterPayload(
   username: string,
   email: string,
@@ -51,7 +51,6 @@ export function Register({
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    // clean previous error
     setError(null);
 
     const validationError = validateRegisterInputs(
@@ -71,11 +70,11 @@ export function Register({
         buildRegisterPayload(username, email, password, confirmpassword)
       );
       console.log("register success:", res);
-      // after registration navigate to login 
+      // Switch to login view after successful registration.
       onGoLogin();
     } catch (error) {
       console.error("register failed:", error);
-      
+
       if (error instanceof Error) {
         setError(error.message);
       } else {
@@ -89,7 +88,6 @@ export function Register({
   return (
     <div className="login-wrapper">
       <div className="login-panel">
-        {/* close button*/}
         <button className="close-button" onClick={onClose} aria-label="Close">
           ✕
         </button>
@@ -143,6 +141,7 @@ export function Register({
             className="submit-button"
             onClick={handleSubmit}
             disabled={loading}
+            type="button"
           >
             {loading ? "Loading..." : "SUBMIT"}
           </button>

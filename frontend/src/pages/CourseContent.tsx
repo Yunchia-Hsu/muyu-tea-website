@@ -11,11 +11,11 @@ import { extractIdFromSlug, courseSlug } from "../utils/slugify";
 import "./CourseContent.css";
 import type { Course } from "../services/api";
 
-// Error types for better UX
+// Error categories for UI messaging.
 type ErrorType = "NOT_FOUND" | "NETWORK" | "INVALID_ID" | null;
 
 export default function Coursecontent() {
-  const { id } = useParams<{ id: string }>(); // get course id from url
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { openAuthModal } = useAuthModal();
   const [course, setCourse] = useState<Course | null>(null);
@@ -28,7 +28,7 @@ export default function Coursecontent() {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [countdown, setCountdown] = useState(3);
 
-  // Auto redirect countdown when error occurs
+  // Auto-redirect after error to avoid dead ends.
   useEffect(() => {
     if (!errorType) return;
 
@@ -46,7 +46,7 @@ export default function Coursecontent() {
     return () => clearInterval(timer);
   }, [errorType, navigate]);
 
-  // Reset state when course id changes
+  // Reset state when course id changes.
   useEffect(() => {
     setImageLoaded(false);
     setEnrollmsg(null);
@@ -56,7 +56,7 @@ export default function Coursecontent() {
 
   useEffect(() => {
     async function fetchCourse() {
-      // Extract and validate ID from slug (e.g., "1-tea-brewing" → 1)
+      // Extract and validate ID from slug (e.g., "1-tea-brewing" → 1).
       const courseId = id ? extractIdFromSlug(id) : -1;
       if (courseId < 0) {
         setError("Invalid course ID");
@@ -81,13 +81,13 @@ export default function Coursecontent() {
         setCourse(data);
         setAllCourses(all);
       } catch (err) {
-        // Handle session expired - open login modal
+        // Prompt re-login if token expired.
         if (err instanceof Error && err.message === "SESSION_EXPIRED") {
           openAuthModal("login");
           return;
         }
 
-        // Determine error type
+        // Determine error type for UX messaging.
         const errorMessage = err instanceof Error ? err.message : "Failed to fetch course";
 
         if (errorMessage.includes("not found") || errorMessage.includes("404")) {
@@ -158,7 +158,7 @@ export default function Coursecontent() {
       await courseAPI.enrollCourse(course.id, token);
       setEnrollmsg("Thank you for enrolled the course.");
     } catch (error) {
-      // Handle session expired - open login modal
+      // Prompt re-login if token expired.
       if (error instanceof Error && error.message === "SESSION_EXPIRED") {
         openAuthModal("login");
         return;
@@ -174,7 +174,7 @@ export default function Coursecontent() {
     }
   };
 
-  // no course - this case is now handled by the error state above
+  // Guard: no course - this case is now handled by the error state above.
   if (!course) {
     return (
       <PageLayout>
@@ -188,7 +188,7 @@ export default function Coursecontent() {
     );
   }
 
-  // Compute prev/next courses ID loop 
+  // Compute circular prev/next navigation.
   const currentIndex = allCourses.findIndex((c) => c.id === course.id);
   const prevCourse =
     allCourses.length > 1
@@ -202,7 +202,7 @@ export default function Coursecontent() {
   return (
     <PageLayout>
       <Header />
-      {/* display course content */}
+      {/* Course detail */}
       <div className="image-wrapper">
         {!imageLoaded && <div className="image-skeleton" />}
         <OptimizedImage

@@ -7,12 +7,6 @@ function Slogan() {
       <h3 className="slogan-subtitle">
         Join our tea courses to deepen your tea knowledge!
       </h3>
-      {/* <button
-        className="slogan-button"
-        onClick={() => navigate("/teaintro")}
-      >
-        Explore Tea
-      </button> */}
     </section>
   );
 }

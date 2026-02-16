@@ -43,13 +43,13 @@ function Coursepreview() {
   const [error, setError] = useState<string | null>(null);
   const { leftIdx, centerIndex, rightIdx, handlePrev, handleNext } =
     useCarousel(courses.length);
-  // check pictures' loading status
+  // Track image load state for skeletons.
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
   const handleImageLoad = (index: number) => {
     setLoadedImages((prev) => new Set(prev).add(index));
   };
 
-  // fetch courses content from API
+  // Fetch courses once on mount.
   useEffect(() => {
     async function fetchCourses() {
       try {
@@ -68,8 +68,7 @@ function Coursepreview() {
     fetchCourses();
   }, []);
 
-
-  // Helper to generate course URL with slug
+  // Generate course URL with slug.
   const getCourseUrl = (course: Course | undefined) =>
     course ? `/coursecontent/${courseSlug(course.id, course.title)}` : "#";
 
@@ -120,7 +119,7 @@ function Coursepreview() {
             onKeyDown={(e) =>
               e.key === "Enter" && navigate(getCourseUrl(courses[leftIdx]))
             }
-            //accessibility
+            // Make cards keyboard-accessible.
             role="button"
             tabIndex={0}
             aria-label={`View course: ${courses[leftIdx]?.title}`}
@@ -146,10 +145,10 @@ function Coursepreview() {
             onKeyDown={(e) =>
               e.key === "Enter" && navigate(getCourseUrl(courses[centerIndex]))
             }
-            //accessibility
+            // Make cards keyboard-accessible.
             role="button"
             tabIndex={0}
-            aria-label={`View course: ${courses[centerIndex]?.title}`} // can be read out 「View course: xxx」
+            aria-label={`View course: ${courses[centerIndex]?.title}`} // Screen reader label.
           >
             <div className="course-image">
               {!loadedImages.has(centerIndex) && (
@@ -195,7 +194,7 @@ function Coursepreview() {
           </div>
         </div>
 
-        <button className="carousel-btn carousel-btn-next" onClick={handleNext} >
+        <button className="carousel-btn carousel-btn-next" onClick={handleNext}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path
               d="M14 18L8 12L14 6"

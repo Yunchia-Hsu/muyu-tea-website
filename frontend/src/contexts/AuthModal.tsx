@@ -1,4 +1,4 @@
-/*update  modal and broadcast to global */
+/* Modal container driven by AuthModalContext. */
 import { useEffect } from "react";
 import { useAuthModal } from "./AuthModalContext";
 import "./AuthModal.css";
@@ -7,7 +7,7 @@ import { Register } from "../components/Register";
 
 export default function AuthModal() {
   const { mode, closeAuthModal, openAuthModal } = useAuthModal();
-  // ESC close modal
+  // Allow ESC to close for accessibility.
   useEffect(() => {
     if (!mode) return;
 
@@ -17,8 +17,8 @@ export default function AuthModal() {
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [mode, closeAuthModal]);
-  // mode === null：no render （no modal）
+  }, [mode]);
+  // Do not render when modal is closed.
   if (!mode) return null;
 
   return (
@@ -27,8 +27,8 @@ export default function AuthModal() {
       role="dialog"
       aria-modal="true"
       onClick={(e) => {
-        // click dark area to close the modal
-        if (e.target === e.currentTarget) closeAuthModal(); //target is where you click
+        // Close only when clicking the overlay (not the panel).
+        if (e.target === e.currentTarget) closeAuthModal();
       }}
     >
       <div className="auth-modal-content">

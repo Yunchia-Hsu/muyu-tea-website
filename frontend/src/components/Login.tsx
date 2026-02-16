@@ -17,9 +17,11 @@ function validateLoginInputs(email: string, password: string): string | null {
 }
 
 function persistAuth(res: { token?: string; user?: unknown }) {
-  if (res.token) localStorage.setItem("token", res.token);// res = response body
+  // Persist auth data for cross-page access.
+  if (res.token) localStorage.setItem("token", res.token);
   if (res.user) localStorage.setItem("user", JSON.stringify(res.user));
-  window.dispatchEvent(new Event("auth-changed"));// broadcast to the browser that quth has changed
+  // Notify listeners to re-read auth state.
+  window.dispatchEvent(new Event("auth-changed"));
 }
 
 export function LoginForm({
@@ -35,7 +37,7 @@ export function LoginForm({
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    setError(null);//clean old error messages
+    setError(null);
 
     const validationError = validateLoginInputs(email, password);
     if (validationError) {
@@ -50,7 +52,7 @@ export function LoginForm({
 
       persistAuth(res);
 
-      // close modal, stay at the same  context
+      // Close modal without navigation.
       onClose();
     } catch (err) {
       console.error("login failed:", err);
@@ -86,7 +88,7 @@ export function LoginForm({
               setEmail(e.target.value);
               setError(null);
             }}
-            disabled={loading}//no changing while loading
+            disabled={loading}
           />
 
           <input

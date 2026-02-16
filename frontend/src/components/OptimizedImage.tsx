@@ -9,7 +9,7 @@ interface OptimizedImageProps {
   style?: React.CSSProperties;
 }
 
-// Convert .png path to .webp path
+// Convert .png/.jpg path to .webp for browsers that support it.
 const getWebPSrc = (src: string): string => {
   return src.replace(/\.(png|jpg|jpeg)$/i, ".webp");
 };

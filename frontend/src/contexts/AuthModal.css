@@ -15,8 +15,6 @@
     overflow: auto;
   }
   
-  /* 如果你原本 .login-panel 有 transform: translateY(-140px) 會讓 modal 飄上去
-     在 modal 裡強制取消 */
   .auth-modal-content .login-panel {
     transform: none !important;
     width: 100% !important;

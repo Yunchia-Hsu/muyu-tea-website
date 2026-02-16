@@ -30,12 +30,6 @@ export const register = async (
     RETURNING id, username, email`,  
     [username, email, hashedpassword]
     );
-
-  //error check
-  console.log("Saving user to DB:", {
-    email,
-    hashedpassword,
-  });
   // users.push(userRecord); // for mock db
   return result.rows[0];
 } catch (error: any) {

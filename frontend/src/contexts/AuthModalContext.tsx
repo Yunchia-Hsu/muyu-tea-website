@@ -1,38 +1,33 @@
 import React from "react";
 import { useState, useContext, useMemo, createContext } from "react";
 
-/*create a context to manage the state of authentication modals,
-so all components can access and modify the state without prop drilling
-*/
-export type AuthModalMode = "login" | "register" | null; //union type
-//define context type
+// Context for auth modal state to avoid prop drilling.
+export type AuthModalMode = "login" | "register" | null;
+// Define context type.
 type AuthModalContextValue = {
   mode: AuthModalMode;
-  openAuthModal: (mode: Exclude<AuthModalMode, null>) => void; //Exclude is Utility Type help compor to check the type (not null)
+  openAuthModal: (mode: Exclude<AuthModalMode, null>) => void; 
   closeAuthModal: () => void;
 };
-const AuthModalContext = createContext<AuthModalContextValue | null>(null); //create a shared space
+const AuthModalContext = createContext<AuthModalContextValue | null>(null);
 
 export function AuthModalProvider({ children }: { children: React.ReactNode }) {
   const [mode, setMode] = useState<AuthModalMode>(null);
+  // Memoize context value to avoid unnecessary rerenders.
   const value = useMemo<AuthModalContextValue>(
     () => ({
       mode,
       openAuthModal: (m) => setMode(m),
       closeAuthModal: () => setMode(null),
     }),
-    [mode]
+    [mode]  
   );
 
   return (
-    <AuthModalContext.Provider value={value}>
-      {" "}
-      {/* context component , save "AuthModalContextValue" to context and broadcast to all */}
-      {children}
-    </AuthModalContext.Provider>
+    <AuthModalContext.Provider value={value}>{children}</AuthModalContext.Provider>
   );
 }
-// let any components to call modals
+// Hook for consuming auth modal context.
 export function useAuthModal() {
   const ctx = useContext(AuthModalContext); 
   if (!ctx) {

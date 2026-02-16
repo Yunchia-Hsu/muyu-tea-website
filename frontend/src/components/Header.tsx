@@ -11,7 +11,7 @@ function Header() {
     null
   );
 
-  // get user info from localStorage + re-read on auth changes
+  // Sync user state from localStorage and auth events.
   useEffect(() => {
     const readUser = () => {
       const userStr = localStorage.getItem("user");
@@ -32,7 +32,6 @@ function Header() {
     return () => window.removeEventListener("auth-changed", readUser);
   }, []);
 
-  // log out
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -57,9 +56,7 @@ function Header() {
         ) : (
           <div>
 
-          {/* <Link to="/login">Log in</Link> */}
           <button onClick={() => openAuthModal("login")}>Log in</button>
-          {/* <button onClick={() => openAuthModal("register")}>Register</button> */}
         </div>
 
         )}
