@@ -1,8 +1,9 @@
  # Muyu Tea - Online Tea Course Platform
   A full-stack web application for browsing and enrolling in tea courses, built with the PERN stack (PostgreSQL, Express, React, Node.js). 
+ 
+
+  ## Live Demo:** http://54.163.50.190
   
-
-
   ## Key Features
 
   - **User Authentication**: Secure registration and login system with JWT tokens and bcrypt password hashing
