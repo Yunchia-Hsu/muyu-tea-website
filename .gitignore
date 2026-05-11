@@ -13,3 +13,8 @@ note.txt
 node_modules
 backend/dist
 frontend/dist
+node_modules
+backend/node_modules
+frontend/node_modules
+backend/.env
+frontend/.env
