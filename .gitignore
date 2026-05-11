@@ -8,3 +8,8 @@ notes/
 coursecontent.png
 homepage.png
 loginpage.png
+test.ts
+note.txt
+node_modules
+backend/dist
+frontend/dist
